@@ -6,7 +6,7 @@ public class UtilLog {
     protected static String log(Enum<Constants> event) {
         // creation at zero balance
         if (event.equals(Constants.CREATE)) {
-            return logCreateAccount();
+            return logCreateZeroAccount();
         } else if (event.equals(Constants.UPDATE)) {
             return logUpdateAccount();
         } else if (event.equals(Constants.REMOVE)) {
@@ -30,7 +30,7 @@ public class UtilLog {
         return "The details for your account were updated";
     }
 
-    private static String logCreateAccount() {
+    private static String logCreateZeroAccount() {
         return "Your account was created with zero balance.";
     }
 
@@ -39,13 +39,24 @@ public class UtilLog {
 
         if (event.equals(Constants.DEPOSIT)) {
             return logDeposit(amount);
-        } else if (event.equals(Constants.WITHDRAW)) {
+        }
+        // creation at some balance
+        else if (event.equals(Constants.CREATE)) {
+            return logCreateBalanceAccount(amount);
+        }
+        else if (event.equals(Constants.WITHDRAW)) {
             return logWithdraw(amount);
-        } else if (event.equals(Constants.INTEREST)) {
+        }
+        else if (event.equals(Constants.INTEREST)) {
             return logInterest(amount);
-        } else
+        }
+        else
             return null;
 
+    }
+
+    private static String logCreateBalanceAccount(long amount) {
+        return "Your account has been created with current balance "+amount;
     }
 
     private static String logInterest(long amount) {
