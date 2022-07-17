@@ -25,7 +25,8 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.search.default.directory_provider">filesystem</property>
         <property name="hibernate.search.default.indexBase">target/indexes</property>
-        <mapping class="bankingSystem.Account"/>
+        <mapping class="BankingSystem.Account"/>
+        <mapping class="BankingSystem.Transaction"/>
 
     </session-factory>
 </hibernate-configuration>

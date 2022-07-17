@@ -2,6 +2,7 @@ package BankingSystem;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
@@ -26,6 +27,7 @@ public class Account {
     private Date creationDate; // when was the account created
 
     @OneToMany
+    @Embedded
     private Collection<Transaction> transactionHistory;
 
     // default constructor for hibernate as it uses a java bean
