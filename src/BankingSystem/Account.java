@@ -26,7 +26,7 @@ public class Account {
     @Transient
     private Date creationDate; // when was the account created
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private Collection<Transaction> transactionHistory;
 
     // default constructor for hibernate as it uses a java bean

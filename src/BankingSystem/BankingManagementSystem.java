@@ -54,8 +54,7 @@ public class BankingManagementSystem {
             Session session = CreateSessionFactory.sessionFactory.openSession();
 
             session.beginTransaction();
-            session.save(account);
-            session.save(transaction);
+            session.persist(account);
             session.getTransaction().commit();
             session.close();
 
