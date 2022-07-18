@@ -26,8 +26,7 @@ public class Account {
     @Transient
     private Date creationDate; // when was the account created
 
-    @OneToMany
-    @Embedded
+    @OneToMany(mappedBy = "account")
     private Collection<Transaction> transactionHistory;
 
     // default constructor for hibernate as it uses a java bean
