@@ -11,7 +11,7 @@
         <property name="connection.username">root</property>
         <property name="connection.password">12345</property>
         <!--  JDBC connection pool (use the built-in)  -->
-        <property name="connection.pool_size">2</property>
+        <property name="connection.pool_size">10</property>
         <!--  SQL dialect which is based on your connecting database -->
         <!--  MYSQL5Dialect dosen't work -->
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>

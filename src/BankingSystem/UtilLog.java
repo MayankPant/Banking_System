@@ -79,6 +79,12 @@ public class UtilLog {
             return "You transferred an amount of "+amount+" to "+transferAccount.getName()+" with an account number "+
                     transferAccount.getAccountNo();
         }
+        if(event.equals(Constants.RECEIVE))
+        {
+            Account transferAccount = (Account) transactionDetail;
+            return "You received an amount of "+amount+" from "+transferAccount.getName()+" with an account number "+
+                    transferAccount.getAccountNo();
+        }
 
         else {
             return null;

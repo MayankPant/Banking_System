@@ -12,36 +12,16 @@ public class BankingManagementSystem {
     public static void createAccount(String name, String phoneNo, String email, String nominee) {
         double balance = -1;
         // providing an option for zero balance account
-        System.out.println("Do you want to create a zero balance account? Press Y for yes and an N for a No");
-        char option = sc.next().charAt(0);
-        boolean menuControl = true;
-
-        while (menuControl) {
-            switch (option) {
-                case 'Y':
-                    balance = 0;
-                    menuControl = false;
-                    break;
-                case 'N':
-                    System.out.println("Enter the amount you want to deposit to open your account.");
-                    menuControl = false;
-                    balance = sc.nextLong();
-                    break;
-                default:
-                    System.out.println("Please enter a valid option or type \"QUIT\" to exit.");
-                    String quitOption = sc.next();
-                    if (quitOption.equals("QUIT")) {
-                        System.out.println("Thanks for working with us.");
-                        menuControl = false;
-                        break;
-                    }
-            }
-        }
+        System.out.println("Do you want to create a zero balance account? Press 1 for Yes and an 2 for a No");
+        short option = Util.twoOptionMenu("Yes","No");
+        if(option == 1)
+            balance = 0;
+        else
+            balance = sc.nextDouble();
 
         Account account = new Account(name, phoneNo, email, nominee, balance);
         Transaction transaction = new Transaction(Constants.CREATE, account, new Date(), balance);
         account.getTransactionHistory().add(transaction);
-
 
 
         try {
@@ -62,32 +42,15 @@ public class BankingManagementSystem {
     }
 
     public static void removeAccount(String name, long accountNo) {
-        System.out.println("Are you sure you want to remove your account? Enter Y for yes and N for no.");
-        char option = sc.next().charAt(0);
-        boolean menuControl = true;
-
-        while (menuControl) {
-            switch (option) {
-                case 'Y':
-                    menuControl = false;
-                    break;
-                case 'N':
-                    System.out.println("Account removal request aborted.");
-                    return;
-                default:
-                    System.out.println("Please enter a valid option or type \"QUIT\" to exit.");
-                    String quitOption = sc.next();
-                    if (quitOption.equals("QUIT")) {
-                        System.out.println("Thanks for working with us.");
-                        menuControl = false;
-                        break;
-                    } else {
-                        option = quitOption.charAt(0);
-                        break;
-                    }
-            }
-
+        System.out.println("Are you sure you want to remove your account? Enter 1 for yes and 2 for no.");
+        short option = Util.twoOptionMenu("Yes","No");
+        if(option == 2)
+        {
+            System.out.println("Account removal request Aborted.");
+            return;
         }
+
+
         try {
             Session session = CreateSessionFactory.sessionFactory.openSession();
 
@@ -209,6 +172,10 @@ public class BankingManagementSystem {
                     break;
             }
             session.update(account);
+            Transaction transaction = new Transaction(Constants.UPDATE,new Date(),account);
+            account.getTransactionHistory().add(transaction);
+            System.out.println(transaction.getTransactionDescription());
+            session.saveOrUpdate(account);
             session.getTransaction().commit();
             session.close();
             return true;
@@ -218,5 +185,82 @@ public class BankingManagementSystem {
             return false;
         }
 
+    }
+
+    public static void transferFunds(String name, long accountNo)
+    {
+        boolean userExists = Util.authenticateUser(name, accountNo);
+
+        if(!userExists)
+            return;
+
+        System.out.println("Enter the name of the receiving user.");
+        String receiverName = sc.nextLine();
+        System.out.println("Enter the account number of the receiving user.");
+        long receiverAccountNo = sc.nextLong();
+
+        userExists = Util.authenticateUser(receiverName,receiverAccountNo);
+
+        if(!userExists)
+            return;
+
+        System.out.println("Enter the amount to be transferred.");
+        double transferredFund = sc.nextDouble();
+
+        // cash and from account options are exclusive to bank and wont be there in atm system
+        System.out.println("Enter the medium for transfer");
+        short option = Util.twoOptionMenu("through cash.","through account.");
+        /*
+        * At this point if the user selects option 1, the employee from the bank
+        * will take the cash amount from him and the money will not be deducted
+        * from his own account. If the user chooses option 2, the amount for transfer will
+        * be deducted from his own account and added into the receivers account.
+        * */
+
+
+        try{
+            Session session  = CreateSessionFactory.sessionFactory.openSession();
+            Account user = session.get(Account.class, accountNo);
+            Account receiver = session.get(Account.class, receiverAccountNo);
+
+            if(option == 1)
+            {
+                receiver.setBalance(receiver.getBalance() + transferredFund);
+            }
+            else {
+                if(user.getBalance() >= transferredFund) {
+                    user.setBalance(user.getBalance() - transferredFund);
+                    receiver.setBalance(receiver.getBalance() + transferredFund);
+                }
+                else {
+                    System.out.println("You don't have enough balance in your account");
+                    System.out.println("Do you want to transfer using cash instead?");
+                    option = Util.twoOptionMenu("Yes","No");
+                    if(option == 1)
+                    {
+                        // employee now takes cash from him.
+                        receiver.setBalance(receiver.getBalance() + transferredFund);
+                    }
+                    else
+                        return;
+                }
+                session.beginTransaction();
+                Transaction transactionUser = new Transaction(Constants.TRANSFER,user,new Date(),transferredFund,user);
+                Transaction transactionReceiver = new Transaction(Constants.RECEIVE,receiver,new Date(),transferredFund, receiver);
+                user.getTransactionHistory().add(transactionUser);
+                receiver.getTransactionHistory().add(transactionReceiver);
+                System.out.println(transactionUser.getTransactionDescription()); //prints a log here
+
+                session.update(user);
+                session.update(receiver);
+                session.getTransaction().commit();
+                session.close();
+
+            }
+        }catch (HibernateException e)
+        {
+            e.printStackTrace();
+            CreateSessionFactory.sessionFactory.close();
+        }
     }
 }
