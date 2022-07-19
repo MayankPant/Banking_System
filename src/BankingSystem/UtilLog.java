@@ -35,7 +35,7 @@ public class UtilLog {
     }
 
     // overloaded method for other logs.
-    protected static String log(Enum<Constants> event, long amount) {
+    protected static String log(Enum<Constants> event, double amount) {
 
         if (event.equals(Constants.DEPOSIT)) {
             return logDeposit(amount);
@@ -55,23 +55,23 @@ public class UtilLog {
 
     }
 
-    private static String logCreateBalanceAccount(long amount) {
+    private static String logCreateBalanceAccount(double amount) {
         return "Your account has been created with current balance "+amount;
     }
 
-    private static String logInterest(long amount) {
+    private static String logInterest(double amount) {
         return "An Interest of " + amount + " was debited to your account";
     }
 
-    private static String logWithdraw(long amount) {
+    private static String logWithdraw(double amount) {
         return "An amount of " + amount + " was withdrawn from your account";
     }
 
-    private static String logDeposit(long amount) {
+    private static String logDeposit(double amount) {
         return "An amount of " + amount + " was deposited to your account";
     }
 // generalised log for very different kinds of transaction. Further logs can be added here
-    protected static String log(Enum<Constants> event, Object transactionDetail, long amount) {
+    protected static String log(Enum<Constants> event, Object transactionDetail, double amount) {
 
         if(event.equals(Constants.TRANSFER))
         {

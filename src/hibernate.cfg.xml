@@ -27,6 +27,7 @@
         <property name="hibernate.search.default.indexBase">target/indexes</property>
         <mapping class="BankingSystem.Account"/>
         <mapping class="BankingSystem.Transaction"/>
+        <mapping class="BankingSystem.Loan"/>
 
     </session-factory>
 </hibernate-configuration>

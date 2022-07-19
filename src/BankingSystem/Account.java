@@ -17,11 +17,14 @@ public class Account {
     private String phoneNo;
     private String email;
     private String nominee;
-    private long balance;
+    private double balance;
     @Embedded
     private ATMCard atmCard;
-    @Embedded
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private Loan loan;
+
+
     private Date lastInterestDate; // when was the interest given last Date
     @Transient
     private Date creationDate; // when was the account created
@@ -34,7 +37,7 @@ public class Account {
     {
 
     }
-    public Account(String name, String phoneNo, String email, String nominee, long balance) {
+    public Account(String name, String phoneNo, String email, String nominee, double balance) {
         this.name = name;
         this.accountNo = createAccountNo();
         this.phoneNo = phoneNo;
@@ -82,7 +85,7 @@ public class Account {
         return nominee;
     }
 
-    public long getBalance() {
+    public double getBalance() {
         return balance;
     }
 
@@ -118,7 +121,7 @@ public class Account {
         this.nominee = nominee;
     }
 
-    public void setBalance(long balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

@@ -31,14 +31,14 @@ public class Transaction {
         this.transactionDescription = UtilLog.log(transactionType);
     }
     // for transactions where amount is involved like withdraw or deposit.
-    public Transaction(Enum<Constants> transactionType, Account account, Date transactionDate, long amount) {
+    public Transaction(Enum<Constants> transactionType, Account account, Date transactionDate, double amount) {
         this.transactionDate = transactionDate;
         this.account = account;
         this.transactionType = transactionType.toString();
         this.transactionDescription = UtilLog.log(transactionType, amount);
     }
     // for transactions which have other requirements
-    public Transaction(Enum<Constants> transactionType, Account account,  Date transactionDate, long amount,Object transactionDetail) {
+    public Transaction(Enum<Constants> transactionType, Account account,  Date transactionDate, double amount,Object transactionDetail) {
         this.transactionDate = transactionDate;
         this.account = account;
         this.transactionType = transactionType.toString();

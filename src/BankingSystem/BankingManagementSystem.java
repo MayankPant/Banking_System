@@ -10,7 +10,7 @@ public class BankingManagementSystem {
     static Scanner sc = new Scanner(System.in);
 
     public static void createAccount(String name, String phoneNo, String email, String nominee) {
-        long balance = -1;
+        double balance = -1;
         // providing an option for zero balance account
         System.out.println("Do you want to create a zero balance account? Press Y for yes and an N for a No");
         char option = sc.next().charAt(0);
@@ -35,15 +35,13 @@ public class BankingManagementSystem {
                         menuControl = false;
                         break;
                     }
-                    break;
             }
         }
 
         Account account = new Account(name, phoneNo, email, nominee, balance);
         Transaction transaction = new Transaction(Constants.CREATE, account, new Date(), balance);
         account.getTransactionHistory().add(transaction);
-        System.out.println("Your account has been created with account no " + account.getAccountNo());
-        System.out.println(transaction.getTransactionDescription()); // always carries the last transaction
+
 
 
         try {
@@ -53,7 +51,8 @@ public class BankingManagementSystem {
             session.persist(account);
             session.getTransaction().commit();
             session.close();
-
+            System.out.println("Your account has been created with account no " + account.getAccountNo());
+            System.out.println(transaction.getTransactionDescription()); // always carries the last transaction
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
