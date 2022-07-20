@@ -285,7 +285,7 @@ public class BankingManagementSystem {
             if(option == 1)
             {
                 if(account.getBalance() >= amount) {
-                    amount = Math.round(amount); // to round off for the algorithm of coin exchange
+                    amount = Math.floor(amount); // to round off for the algorithm of coin exchange
                     Util.giveMoney(amount); // prints the money using coin exchange
 
                     account.setBalance(account.getBalance() - amount);
