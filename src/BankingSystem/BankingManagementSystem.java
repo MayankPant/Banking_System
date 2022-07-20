@@ -17,6 +17,7 @@ public class BankingManagementSystem {
         if(option == 1)
             balance = 0;
         else
+            System.out.println("Please enter the starting balance.");
             balance = sc.nextDouble();
 
         Account account = new Account(name, phoneNo, email, nominee, balance);
@@ -259,6 +260,56 @@ public class BankingManagementSystem {
             }
         }catch (HibernateException e)
         {
+            e.printStackTrace();
+            CreateSessionFactory.sessionFactory.close();
+        }
+    }
+
+    public static void withdrawOrDeposit(String name, long accountNo)
+    {
+        boolean userExists = Util.authenticateUser(name, accountNo);
+
+        if(!userExists)
+            return;
+
+        System.out.println("Please enter the amount you want to withdraw or deposit.");
+        double amount = sc.nextDouble();
+
+        short option = Util.twoOptionMenu("Withdraw","Deposit");
+
+        try {
+            Session session = CreateSessionFactory.sessionFactory.openSession();
+            session.beginTransaction();
+            Account account = session.get(Account.class, accountNo);
+
+            if(option == 1)
+            {
+                if(account.getBalance() >= amount) {
+                    amount = Math.round(amount); // to round off for the algorithm of coin exchange
+                    Util.giveMoney(amount); // prints the money using coin exchange
+
+                    account.setBalance(account.getBalance() - amount);
+                    Transaction transaction = new Transaction(Constants.WITHDRAW,account,new Date(),amount);
+                    account.getTransactionHistory().add(transaction);
+                    System.out.println(transaction.getTransactionDescription());
+
+                }
+                else{
+                    System.out.println("You don't have enough balance.");
+                    return;
+                }
+            }
+            else if(option == 2)
+            {
+                account.setBalance(account.getBalance() + amount);
+                Transaction transaction = new Transaction(Constants.DEPOSIT,account,new Date(),amount);
+                account.getTransactionHistory().add(transaction);
+                System.out.println(transaction.getTransactionDescription());
+            }
+            session.saveOrUpdate(account);
+            session.getTransaction().commit();
+            session.close();
+        } catch (HibernateException e) {
             e.printStackTrace();
             CreateSessionFactory.sessionFactory.close();
         }

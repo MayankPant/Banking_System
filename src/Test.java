@@ -22,7 +22,11 @@ public class Test {
 //        session.getTransaction().commit();
 //        session.close();
 
-        BankingManagementSystem.transferFunds("Mayank",1863572361369511L);
+//        BankingManagementSystem.transferFunds("Mayank",1863572361369511L);
+    //    BankingManagementSystem.createAccount("Niharika","3456","n@gamil","Mayank");
+ //       BankingManagementSystem.withdrawOrDeposit("Niharika",1304273999255917L);
+        BankingManagementSystem.withdrawOrDeposit("Niharika",1304273999255917L);
+
 
     }
 }
