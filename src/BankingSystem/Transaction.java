@@ -2,7 +2,6 @@ package BankingSystem;
 
 import javax.persistence.*;
 import java.util.Calendar;
-
 @Entity
 public class Transaction {
     private Calendar transactionDate;

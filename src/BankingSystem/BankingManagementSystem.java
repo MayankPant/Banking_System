@@ -3,6 +3,7 @@ package BankingSystem;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Scanner;
 import org.hibernate.query.*;
 
@@ -318,6 +319,65 @@ public class BankingManagementSystem {
 
     public static  void transactionHistory(String name,long accountNo){
 
+        boolean userExists = Util.authenticateUser(name, accountNo);
 
+        if(!userExists)
+            return;
+
+        System.out.println("Enter the duration to which you want your transaction history.");
+        System.out.println("1. Lifetime\n2. last Week\n3. Last Month\n4. Last Year");
+
+
+
+        try {
+            Session session = CreateSessionFactory.sessionFactory.openSession();
+            Query query = null;
+            boolean menuControl = true;
+            while (menuControl)
+            {
+                String option = sc.next();
+                switch (option)
+                {
+                    case "1":
+                        query = session.createQuery(
+                                "from Transaction where account.accountNo  = :accountNo"
+                        );
+                        menuControl = false;
+                        break;
+                    case "2":
+                        query = session.createQuery(
+                                "from Transaction where account.accountNo  = :accountNo AND Transaction.transactionDate.get(Calender.DAY_OF_MONTH) BETWEEN (Calendar.get(Calender.DAY_OF_MONTH)-7) AND Calendar.get(Calender.DAY_OF_MONTH)"
+                        );
+                        menuControl = false;
+                        break;
+                    case "3":
+                        query = session.createQuery(
+                                "from Transaction where account.accountNo  = :accountNo AND Transaction.transactionDate.get(Calender.MONTH) BETWEEN (Calendar.get(Calender.MONTH)-1) AND Calendar.get(Calender.MONTH)"
+                        );
+                        menuControl = false;
+                        break;
+                    case "4":
+                        query = session.createQuery(
+                                "from Transaction where account.accountNO  = :accountNo AND Transaction.transactionDate.get(Calender.YEAR) BETWEEN (Calendar.get(Calender.YEAR-1) AND Calendar.get(Calender.YEAR)"
+                        );
+                        menuControl = false;
+                    default:
+                        System.out.println("Please enter a valid input");
+                }
+            }
+
+            query.setParameter("accountNo",accountNo);
+            List<Transaction> transactions = query.list();
+
+            for(Transaction transactionList : transactions)
+            {
+                System.out.println(transactionList.getTransactionType() +"     "+transactionList.getTransactionDescription());
+            }
+
+            session.close();
+        }catch (HibernateException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
