@@ -3,7 +3,8 @@ package BankingSystem;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 @Entity
 @Table(name = "ACCOUNTS")
@@ -25,9 +26,9 @@ public class Account {
     private Loan loan;
 
 
-    private Date lastInterestDate; // when was the interest given last Date
+    private Calendar lastInterestDate; // when was the interest given last Date
     @Transient
-    private Date creationDate; // when was the account created
+    private Calendar creationDate; // when was the account created
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private Collection<Transaction> transactionHistory;
@@ -46,7 +47,7 @@ public class Account {
         this.balance = balance;
         this.atmCard = null;
         this.loan = null;
-        this.creationDate = new Date();
+        this.creationDate = new GregorianCalendar();
         this.lastInterestDate = null;
         this.transactionHistory = new ArrayList<Transaction>();
     }
@@ -97,11 +98,11 @@ public class Account {
         return loan;
     }
 
-    public Date getLastInterestDate() {
+    public Calendar getLastInterestDate() {
         return lastInterestDate;
     }
 
-    public Date getCreationDate() {
+    public Calendar getCreationDate() {
         return creationDate;
     }
 
@@ -133,7 +134,7 @@ public class Account {
         this.loan = loan;
     }
 
-    public void setLastInterestDate(Date lastInterestDate) {
+    public void setLastInterestDate(Calendar lastInterestDate) {
         this.lastInterestDate = lastInterestDate;
     }
 

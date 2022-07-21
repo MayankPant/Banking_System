@@ -1,7 +1,7 @@
 package BankingSystem;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "Loans")
@@ -16,7 +16,7 @@ public class Loan {
     @Transient
     private long emi;
     @Transient
-    private Date loanTakenOn;
+    private Calendar loanTakenOn;
     private int doneEMIs;
     private int remainingEMIs;
 
@@ -26,7 +26,7 @@ public class Loan {
 
     }
 
-    public Loan(double loanAmount, Account account, long emi, Date loanTakenOn, int doneEMIs, int remainingEMIs) {
+    public Loan(double loanAmount, Account account, long emi, Calendar loanTakenOn, int doneEMIs, int remainingEMIs) {
         this.loanAmount = loanAmount;
         this.account = account;
         this.emi = emi;
@@ -59,11 +59,11 @@ public class Loan {
         this.emi = emi;
     }
 
-    public Date getLoanTakenOn() {
+    public Calendar getLoanTakenOn() {
         return loanTakenOn;
     }
 
-    public void setLoanTakenOn(Date loanTakenOn) {
+    public void setLoanTakenOn(Calendar loanTakenOn) {
         this.loanTakenOn = loanTakenOn;
     }
 

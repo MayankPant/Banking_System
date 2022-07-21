@@ -2,8 +2,9 @@ package BankingSystem;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
+import org.hibernate.query.*;
 
 public class BankingManagementSystem {
 
@@ -21,7 +22,7 @@ public class BankingManagementSystem {
             balance = sc.nextDouble();
 
         Account account = new Account(name, phoneNo, email, nominee, balance);
-        Transaction transaction = new Transaction(Constants.CREATE, account, new Date(), balance);
+        Transaction transaction = new Transaction(Constants.CREATE, account, new GregorianCalendar(), balance);
         account.getTransactionHistory().add(transaction);
 
 
@@ -58,7 +59,7 @@ public class BankingManagementSystem {
             Account account = session.get(Account.class, accountNo);
             // adding the log of deletion.
             if (account.getName().equals(name)) {
-                Transaction transaction = new Transaction(Constants.REMOVE, new Date(), account);
+                Transaction transaction = new Transaction(Constants.REMOVE, new GregorianCalendar(), account);
                 account.getTransactionHistory().add(transaction);
 
                 System.out.println(transaction.getTransactionDescription());
@@ -173,7 +174,7 @@ public class BankingManagementSystem {
                     break;
             }
             session.update(account);
-            Transaction transaction = new Transaction(Constants.UPDATE,new Date(),account);
+            Transaction transaction = new Transaction(Constants.UPDATE,new GregorianCalendar(),account);
             account.getTransactionHistory().add(transaction);
             System.out.println(transaction.getTransactionDescription());
             session.saveOrUpdate(account);
@@ -246,8 +247,8 @@ public class BankingManagementSystem {
                         return;
                 }
                 session.beginTransaction();
-                Transaction transactionUser = new Transaction(Constants.TRANSFER,user,new Date(),transferredFund,user);
-                Transaction transactionReceiver = new Transaction(Constants.RECEIVE,receiver,new Date(),transferredFund, receiver);
+                Transaction transactionUser = new Transaction(Constants.TRANSFER,user,new GregorianCalendar(),transferredFund,user);
+                Transaction transactionReceiver = new Transaction(Constants.RECEIVE,receiver,new GregorianCalendar(),transferredFund, receiver);
                 user.getTransactionHistory().add(transactionUser);
                 receiver.getTransactionHistory().add(transactionReceiver);
                 System.out.println(transactionUser.getTransactionDescription()); //prints a log here
@@ -289,7 +290,7 @@ public class BankingManagementSystem {
                     Util.giveMoney(amount); // prints the money using coin exchange
 
                     account.setBalance(account.getBalance() - amount);
-                    Transaction transaction = new Transaction(Constants.WITHDRAW,account,new Date(),amount);
+                    Transaction transaction = new Transaction(Constants.WITHDRAW,account,new GregorianCalendar(),amount);
                     account.getTransactionHistory().add(transaction);
                     System.out.println(transaction.getTransactionDescription());
 
@@ -302,7 +303,7 @@ public class BankingManagementSystem {
             else if(option == 2)
             {
                 account.setBalance(account.getBalance() + amount);
-                Transaction transaction = new Transaction(Constants.DEPOSIT,account,new Date(),amount);
+                Transaction transaction = new Transaction(Constants.DEPOSIT,account,new GregorianCalendar(),amount);
                 account.getTransactionHistory().add(transaction);
                 System.out.println(transaction.getTransactionDescription());
             }
@@ -313,5 +314,10 @@ public class BankingManagementSystem {
             e.printStackTrace();
             CreateSessionFactory.sessionFactory.close();
         }
+    }
+
+    public static  void transactionHistory(String name,long accountNo){
+
+
     }
 }
