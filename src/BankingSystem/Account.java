@@ -6,20 +6,22 @@ import java.util.Collection;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+
 @Entity
 @Table(name = "ACCOUNTS")
 public class Account {
 
     private String name;
     @Id
-    private long accountNo;
+    private final long accountNo = createAccountNo();
     @Transient
     private final static byte noOfTransactions = 3;
     private String phoneNo;
     private String email;
     private String nominee;
     private double balance;
-    @Embedded
+
+    @OneToOne(mappedBy = "cardHolderAccount", cascade = CascadeType.ALL)
     private ATMCard atmCard;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
@@ -40,7 +42,6 @@ public class Account {
     }
     public Account(String name, String phoneNo, String email, String nominee, double balance) {
         this.name = name;
-        this.accountNo = createAccountNo();
         this.phoneNo = phoneNo;
         this.email = email;
         this.nominee = nominee;

@@ -20,6 +20,10 @@ public class Loan {
     private int doneEMIs;
     private int remainingEMIs;
 
+    @OneToOne
+    @JoinColumn(name = "card_no")
+    private ATMCard atmCard;
+
     // default constructor for hibernate
     public Loan()
     {
@@ -33,6 +37,14 @@ public class Loan {
         this.loanTakenOn = loanTakenOn;
         this.doneEMIs = doneEMIs;
         this.remainingEMIs = remainingEMIs;
+    }
+
+    public ATMCard getAtmCard() {
+        return atmCard;
+    }
+
+    public void setAtmCard(ATMCard atmCard) {
+        this.atmCard = atmCard;
     }
 
     public double getLoanAmount() {
