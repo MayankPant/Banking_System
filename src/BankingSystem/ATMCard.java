@@ -9,14 +9,15 @@ public class ATMCard {
     @Id
     private  long cardNumber;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Account_No")
     private  Account cardHolderAccount; // mapping
 
-    @OneToOne(mappedBy = "atmCard")
+    @OneToOne(mappedBy = "atmCard", cascade = CascadeType.ALL)
     private Loan loan; // to pay emi's from atmMachines
 
     private  Calendar expiryDate;
+    private Calendar banDate;
     private  short cvv;
     private short mPin;
     private  String cardHolderName;
@@ -34,8 +35,12 @@ public class ATMCard {
         this.cardNumber = createCardNumber();
         this.mPin = createMpin();
         this.cvv = createCvv();
+        this.banDate = new GregorianCalendar(); // gets the time during the creation because the checkBanned does not support null.
         Calendar creationDate = new GregorianCalendar();
-        this.expiryDate = new GregorianCalendar(creationDate.get(Calendar.YEAR),creationDate.get(Calendar.MONTH),creationDate.get(Calendar.DAY_OF_MONTH));
+        int year = creationDate.get(Calendar.YEAR);
+        // works for 4 year.
+        this.expiryDate = new GregorianCalendar(year + 4,creationDate.get(Calendar.MONTH),creationDate.get(Calendar.DAY_OF_MONTH));
+
     }
 
 
@@ -80,6 +85,13 @@ public class ATMCard {
         return cardHolderAccount;
     }
 
+    public Calendar getBanDate() {
+        return banDate;
+    }
+
+    public void setBanDate(Calendar banDate) {
+        this.banDate = banDate;
+    }
 
     public Loan getLoan() {
         return loan;

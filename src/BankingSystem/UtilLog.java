@@ -13,13 +13,18 @@ public class UtilLog {
             return logRemoveAccount();
         } else if (event.equals(Constants.QUERY)) {
             return logQuery();
-        } else
+        } else if (event.equals(Constants.CHANGE_PIN))
+            return logATMChangePin();
+        else
             return null;
     }
 
     private static String logQuery() {
 
         return "A query was generated about your account";
+    }
+    private static String logATMChangePin(){
+        return "Your ATM mPIN was changed.";
     }
 
     private static String logRemoveAccount() {
@@ -84,6 +89,11 @@ public class UtilLog {
             Account transferAccount = (Account) transactionDetail;
             return "You received an amount of "+amount+" from "+transferAccount.getName()+" with an account number "+
                     transferAccount.getAccountNo();
+        }
+        if(event.equals(Constants.EMI_PAID)){
+            Loan userLoan =  (Loan)transactionDetail;
+            return "You have paid this months emi worth "+ userLoan.getEmi()+". You have "+userLoan.getRemainingEMIs()+" EMI's " +
+                    "still left.";
         }
 
         else {

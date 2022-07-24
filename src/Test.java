@@ -2,6 +2,7 @@ import BankingSystem.*;
 import org.hibernate.Session;
 
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 
 public class Test {
@@ -14,14 +15,13 @@ public class Test {
        Session session = CreateSessionFactory.sessionFactory.openSession();
 
         session.beginTransaction();
-        Account account = session.get(Account.class, 5664901559012112L);
+        ATMCard card = session.get(ATMCard.class, 2492753658867922L);
 
-        Loan loan = new Loan(45639,account,232,new GregorianCalendar(),3,9);
-        account.setLoan(loan);
-        loan.setAccount(account);
-      ATMCard card = new ATMCard(account, account.getLoan(), account.getName());
-      account.setAtmCard(card);
-        session.save(account);
+        ATMMachine atmMachine = new ATMMachine(new HashMap<>(), true,new Location("adham","new jersey","usa",213445));
+
+        atmMachine.changePin(card);
+        atmMachine.transferFunds(card);
+        atmMachine.updateAccountDetails(card);
         session.getTransaction().commit();
         session.close();
 

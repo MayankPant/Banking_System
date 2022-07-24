@@ -2,6 +2,8 @@ package BankingSystem;
 
 import org.hibernate.Session;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 // has utility methods for the application
@@ -111,4 +113,21 @@ public class Util {
         }
         System.out.println();
     }
+
+    public static boolean checkBannedOrExpired(ATMCard atmCard) {
+
+        Calendar curDate = new GregorianCalendar();
+        if(curDate.after(atmCard.getBanDate()) && curDate.before(atmCard.getExpiryDate()))
+            return false;
+        else
+        {
+            if(curDate.after(atmCard.getExpiryDate()))
+                System.out.println("Your card is expired. Please send a request for a new one.");
+            else if(curDate.before(atmCard.getBanDate()))
+                System.out.println("Your card is banned.");
+
+            return true;
+        }
+    }
+
 }

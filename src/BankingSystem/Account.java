@@ -20,7 +20,7 @@ public class Account {
     private String email;
     private String nominee;
     private double balance;
-
+    //not sure about this being bi-directional
     @OneToOne(mappedBy = "cardHolderAccount", cascade = CascadeType.ALL)
     private ATMCard atmCard;
 
