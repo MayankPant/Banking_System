@@ -86,10 +86,11 @@ public class BankingManagementSystem {
             return;
 
 
-        System.out.println("Please select the details you want to update about your account.\nYou can" +
+        System.out.println("Please select the details you want to update about your account.\nYou can " +
                 "select multiple items by entering a space separated list of options you want to upgrade.");
-        System.out.println("1 for a Name change.\n2 for a phone number change.\n3 for an email change.\n4 for a nominee." +
+        System.out.println("1 for a Name change.\n2 for a phone number change.\n3 for an email change.\n4 for a nominee " +
                 "change\n");
+        sc.nextLine();
         String userInput = sc.nextLine(); // enter a space separated list of the above options
         String[] chosenOptions = userInput.split(" ");
         boolean updated = false;

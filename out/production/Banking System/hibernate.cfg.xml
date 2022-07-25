@@ -29,6 +29,7 @@
         <mapping class="BankingSystem.Transaction"/>
         <mapping class="BankingSystem.Loan"/>
         <mapping class="BankingSystem.ATMCard"/>
+        <mapping class="BankingSystem.ATMMachine"/>
 
     </session-factory>
 </hibernate-configuration>

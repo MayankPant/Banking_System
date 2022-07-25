@@ -19,9 +19,10 @@ public class Test {
 
         ATMMachine atmMachine = new ATMMachine(new HashMap<>(), true,new Location("adham","new jersey","usa",213445));
 
-        atmMachine.changePin(card);
-        atmMachine.transferFunds(card);
-        atmMachine.updateAccountDetails(card);
+ //       atmMachine.changePin(card);
+   //     atmMachine.transferFunds(card);
+     //   atmMachine.updateAccountDetails(card);
+        session.save(atmMachine);
         session.getTransaction().commit();
         session.close();
 

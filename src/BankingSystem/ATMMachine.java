@@ -5,13 +5,17 @@ import org.hibernate.HibernateException;
 import javax.persistence.*;
 import java.util.*;
 
+@Entity
 public class ATMMachine extends BankingManagementSystem {
     @ElementCollection
      // has how many denominations a particular note has
-    private Map<Integer, Integer> cashVault;
+    private Map<Integer, Integer> cashVault = new HashMap<>();
     private boolean isActive; // whether its active or not
     @Embedded
     private Location atmLocation;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int atmId;
 
     private static Scanner sc = new Scanner(System.in);
 
