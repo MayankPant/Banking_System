@@ -404,6 +404,8 @@ public class BankingManagementSystem {
 
             Loan userLoan = LoanManagementSystem.takeLoan(name,accountNo);
             userAccount.setLoan(userLoan);
+            assert userLoan != null;
+            userLoan.setAccount(userAccount);
             Transaction transaction = new Transaction(Constants.LOAN, userAccount, new GregorianCalendar(), userLoan.getEmi(), userLoan);
             userAccount.getTransactionHistory().add(transaction);
             System.out.println(transaction.getTransactionDescription());
@@ -434,7 +436,9 @@ public class BankingManagementSystem {
             // uses the loan management system here.
             LoanManagementSystem.payLoanEmi(userAccount);
 
-            session.saveOrUpdate(userAccount);
+            session.update(userAccount);
+            session.update(userAccount.getLoan());
+            session.getTransaction().commit();
             session.close();
         } catch (HibernateException e) {
             e.printStackTrace();

@@ -13,9 +13,9 @@ public class Loan {
     @OneToOne
     @JoinColumn(name = "Account_No")
     private Account account;
-    @Transient
+
     private long emi;
-    @Transient
+
     private Calendar loanTakenOn;
     private int doneEMIs;
     private int remainingEMIs;
