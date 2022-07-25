@@ -381,4 +381,66 @@ public class BankingManagementSystem {
             e.printStackTrace();
         }
     }
+
+
+    public static void takeLoan(String name, long accountNo){
+
+        boolean userExists = Util.authenticateUser(name, accountNo);
+
+        if(!userExists)
+            return;
+        try {
+            Session session = CreateSessionFactory.sessionFactory.openSession();
+
+            session.beginTransaction();
+
+            Account userAccount = session.get(Account.class, accountNo);
+
+            if(userAccount.getLoan() != null)
+            {
+                System.out.println("You have already taken a loan. Please pay it back to take a loan again.");
+                return;
+            }
+
+            Loan userLoan = LoanManagementSystem.takeLoan(name,accountNo);
+            userAccount.setLoan(userLoan);
+            Transaction transaction = new Transaction(Constants.LOAN, userAccount, new GregorianCalendar(), userLoan.getEmi(), userLoan);
+            userAccount.getTransactionHistory().add(transaction);
+            System.out.println(transaction.getTransactionDescription());
+
+            session.saveOrUpdate(userAccount);
+            session.getTransaction().commit();
+            session.close();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            CreateSessionFactory.sessionFactory.close();
+        }
+
+    }
+
+    public static void payLoanEmi(String name, long accountNo){
+        boolean userExists = Util.authenticateUser(name, accountNo);
+
+        if(!userExists)
+            return;
+
+        try {
+            Session session = CreateSessionFactory.sessionFactory.openSession();
+
+            session.beginTransaction();
+
+            Account userAccount = session.get(Account.class, accountNo);
+
+            // uses the loan management system here.
+            LoanManagementSystem.payLoanEmi(userAccount);
+
+            session.saveOrUpdate(userAccount);
+            session.close();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            CreateSessionFactory.sessionFactory.close();
+        }
+
+    }
+
 }

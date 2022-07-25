@@ -109,6 +109,12 @@ public class LoanManagementSystem {
             loan.setRemainingEMIs(loan.getRemainingEMIs() - 1);
             loan.setDoneEMIs(loan.getDoneEMIs() + 1);
             loan.setLoanAmount(loan.getLoanAmount()  - loan.getEmi());
+            // if you don't have any remaining emi's then you loan is paid.
+
+            if(loan.getRemainingEMIs() == 0)
+                account.setLoan(null);
+
+
             Transaction transaction = new Transaction(Constants.EMI_PAID, account,new GregorianCalendar(),loan.getEmi(),loan);
             account.getTransactionHistory().add(transaction);
             System.out.println(transaction.getTransactionDescription());
@@ -123,6 +129,13 @@ public class LoanManagementSystem {
 
                 // the amount is deducted from his bank balance.
                 account.setBalance(account.getBalance() - loan.getEmi());
+
+                // if you don't have any remaining emi's then you loan is paid.
+
+                if(loan.getRemainingEMIs() == 0)
+                    account.setLoan(null);
+
+
 
                 Transaction transaction = new Transaction(Constants.EMI_PAID, account,new GregorianCalendar(),loan.getEmi(),loan);
                 account.getTransactionHistory().add(transaction);

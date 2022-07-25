@@ -95,6 +95,10 @@ public class UtilLog {
             return "You have paid this months emi worth "+ userLoan.getEmi()+". You have "+userLoan.getRemainingEMIs()+" EMI's " +
                     "still left.";
         }
+        if(event.equals(Constants.LOAN)){
+            Loan userLoan =  (Loan)transactionDetail;
+            return "You have taken a loan of "+userLoan.getLoanAmount()+" for a monthly emi of "+userLoan.getEmi();
+        }
 
         else {
             return null;
