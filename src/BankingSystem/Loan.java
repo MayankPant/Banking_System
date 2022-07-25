@@ -66,8 +66,8 @@ public class Loan {
     public long getEmi() {
         return emi;
     }
-
-    public void setEmi(long emi) {
+    // this method should be inaccessible directly so its private
+    private void setEmi(long emi) {
         this.emi = emi;
     }
 

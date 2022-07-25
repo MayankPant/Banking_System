@@ -215,19 +215,10 @@ public class ATMMachine extends BankingManagementSystem {
         if(authenticateCard(atmCard))
             return;
 
-        Loan userLoan = atmCard.getLoan();
+        Account account = atmCard.getCardHolderAccount();
+        // uses the loan management system here.
+        LoanManagementSystem.payLoanEmi(account);
 
-        System.out.println("Do you want to pay your EMI for this month?");
-        short option = Util.twoOptionMenu("Yes","No");
-
-        if(option == 1){
-            userLoan.setDoneEMIs(userLoan.getDoneEMIs() + 1);
-            userLoan.setRemainingEMIs(userLoan.getRemainingEMIs() - 1);
-            Transaction transaction = new Transaction(Constants.EMI_PAID,atmCard.getCardHolderAccount(),new GregorianCalendar(),userLoan.getEmi(),userLoan);
-            atmCard.getCardHolderAccount().getTransactionHistory().add(transaction);
-            System.out.println(transaction.getTransactionDescription());
         }
-    }
-
-
 }
+
