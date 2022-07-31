@@ -67,6 +67,13 @@ public class ATMMachine extends BankingManagementSystem {
         this.atmLocation = atmLocation;
     }
 
+    public int getAtmId() {
+        return atmId;
+    }
+
+    public void setAtmId(int atmId) {
+        this.atmId = atmId;
+    }
 
     private boolean authenticateCard(ATMCard atmCard){
         Account user = atmCard.getCardHolderAccount();

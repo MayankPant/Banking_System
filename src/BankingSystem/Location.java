@@ -53,4 +53,8 @@ public class Location {
     public void setPinCode(int pinCode) {
         this.pinCode = pinCode;
     }
+
+    public String toString(){
+        return getStreet()+"    "+ getCity() + "   "+getState()+"    "+getPinCode();
+    }
 }
