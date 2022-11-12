@@ -52,6 +52,7 @@ public class Driver {
             if(option.equals("1")){
                 System.out.println("Welcome to account creation form.");
                 System.out.println("Please enter your name.");
+                sc.nextLine();
                 String userName = sc.nextLine();
                 sc.nextLine();
                 System.out.println("Please enter your phone No");
